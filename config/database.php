@@ -2,10 +2,10 @@
 // config/database.php
 class Database
 {
-    private $host = 'localhost';
-    private $db_name = 'chat_app';
-    private $username = 'root';
-    private $password = '';
+    private $host = 'mnz.domcloud.co';
+    private $db_name = 'etransfer_coach_miw_db';
+    private $username = 'etransfer-coach-miw';
+    private $password = 'jKqvTl6G5J6W9j(-3)';
     private $conn;
 
     public function getConnection()
