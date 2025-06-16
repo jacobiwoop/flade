@@ -9,7 +9,7 @@ fi
 php websocket/server.php &
 
 # Lancer ngrok en tunnel TCP vers le port 8081 en arrière-plan
-ngrok tcp 8081 --log=stdout &
+ngrok http 8081 --log=stdout &
 
 # Démarrer Apache en premier plan
 apache2-foreground
