@@ -4,7 +4,7 @@
 apache2-foreground &
 
 # Démarrer le serveur WebSocket (par exemple Ratchet)
-php server/websocket-server.php &
+php websocket/server.php &
 
 # Garder le container vivant en attendant les processus
 wait -n
