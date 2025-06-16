@@ -35,10 +35,10 @@ class ChatServer implements MessageComponentInterface
     private function initializeDatabase()
     {
         try {
-            $DB_HOST = 'localhost'; // Remplacez par votre hôte de base de données
-            $DB_NAME = 'chat_app'; // Remplacez par le nom de votre base de données 
-            $DB_USER = 'root'; // Remplacez par votre utilisateur de base de données
-            $DB_PASS = ''; // Remplacez par votre mot de passe de base de données
+            $DB_HOST = 'mnz.domcloud.co'; // Remplacez par votre hôte de base de données
+            $DB_NAME = 'etransfer_coach_miw_db'; // Remplacez par le nom de votre base de données 
+            $DB_USER = 'etransfer-coach-miw'; // Remplacez par votre utilisateur de base de données
+            $DB_PASS = 'jKqvTl6G5J6W9j(-3)'; // Remplacez par votre mot de passe de base de données
             // Créer une nouvelle instance de connexion PDO avec des options spécifiques
             $dsn = "mysql:host=" . $DB_HOST .    ";dbname=" . $DB_NAME . ";charset=utf8mb4";
             $options = [
