@@ -22,6 +22,6 @@ RUN a2enmod rewrite
 COPY start.sh /start.sh
 RUN chmod +x /start.sh
 
-EXPOSE 80 8080
+EXPOSE 80 8081
 
 CMD ["/start.sh"]
