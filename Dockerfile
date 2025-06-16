@@ -14,10 +14,12 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Télécharger et installer ngrok
-RUN wget -q https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-linux-amd64.zip \
-    && unzip ngrok-stable-linux-amd64.zip \
+# Télécharger et installer ngrok v3
+RUN wget -q https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.tgz \
+    && tar -xzf ngrok-v3-stable-linux-amd64.tgz \
     && mv ngrok /usr/local/bin/ngrok \
-    && rm ngrok-stable-linux-amd64.zip
+    && rm ngrok-v3-stable-linux-amd64.tgz
+
 
 # Copier le code source dans le container
 WORKDIR /var/www/html
