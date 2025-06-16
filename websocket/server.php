@@ -504,7 +504,7 @@ try {
                 new ChatServer()
             )
         ),
-        8080
+        8081
     );
 
     echo "Serveur WebSocket en écoute sur le port 8080\n";
