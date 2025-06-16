@@ -1,33 +1,30 @@
-# Utilise une image officielle PHP avec Apache
-FROM php:8.2-apache
+FROM php:8.1-apache
 
-# Installer zip si ton projet en a besoin (par exemple pour composer)
+# Installer les dépendances système pour composer et zip (exemple)
 RUN apt-get update && apt-get install -y \
     unzip \
-    zip \
-    libzip-dev \
-    && docker-php-ext-install zip
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
-# Activer mod_rewrite pour les URLs propres
-RUN a2enmod rewrite
-
-# Copier les fichiers du projet dans le conteneur
-COPY . /var/www/html/
-
-# Ajouter Composer (dernière version)
+# Installer composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Aller dans le dossier du projet
+# Copier le code source
 WORKDIR /var/www/html
+COPY . .
 
-# Installer les dépendances PHP (si composer.json existe)
-RUN [ -f composer.json ] && composer install --no-interaction --prefer-dist || true
+# Installer les dépendances PHP via composer
+RUN composer install --no-interaction --prefer-dist
 
-# Définir les droits (facultatif si pas de problème de permission)
-RUN chown -R www-data:www-data /var/www/html
+# Activer mod_rewrite Apache
+RUN a2enmod rewrite
 
-# Exposer le port 80
-EXPOSE 80
+# Copier et rendre exécutable le script de démarrage
+COPY start.sh /start.sh
+RUN chmod +x /start.sh
 
-# Démarrer Apache
-CMD ["apache2-foreground"]
+# Exposer ports Apache (80) et WebSocket (8081)
+EXPOSE 80 8081
+
+# Démarrer Apache et WebSocket
+CMD ["/start.sh"]
