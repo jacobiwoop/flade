@@ -2,12 +2,8 @@
 // websocket/server.php
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config/database.php';
-$path = __DIR__ . '/../classes/Chat.php';
-if (!file_exists($path)) {
-    echo "Chat.php introuvable à : $path\n";
-    exit(1);
-}
-require_once $path;
+require_once '/var/www/html/classes/Chat.php';
+
 
 
 use Ratchet\Server\IoServer;
