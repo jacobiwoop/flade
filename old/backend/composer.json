@@ -1,0 +1,15 @@
+{
+  "name": "floade/chat-backend",
+  "description": "Backend pour l'application de chat Floade",
+  "type": "project",
+  "require": {
+    "php": ">=7.4",
+    "ratchet/pawl": "^0.4",
+    "react/socket": "^1.12"
+  },
+  "autoload": {
+    "psr-4": {
+      "Floade\\": "classes/"
+    }
+  }
+}

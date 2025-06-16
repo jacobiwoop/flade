@@ -1,0 +1,26 @@
+{
+  "name": "floade",
+  "short_name": "floade",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "rgb(19, 19, 20)",
+  "background_color": "rgb(19, 19, 20)",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/icons/icons-144-.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "/icons/icons-192.jpg",
+      "type": "image/jpeg",
+      "sizes": "192x192"
+    },
+    {
+      "src": "/icons/icons-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

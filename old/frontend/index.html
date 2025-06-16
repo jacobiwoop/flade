@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Floade Chat</title>
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="icons/icon-72x72.png">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="logo">
+                <img src="icons/floade-high-resolution-logo.png" alt="Floade Chat" class="logo-img">
+            </div>
+            <h1>Bienvenue sur Floade Chat</h1>
+            <p>Connectez-vous avec vos amis en temps réel</p>
+            
+            <div class="auth-buttons">
+                <a href="pages/login.html" class="btn btn-primary">Se connecter</a>
+                <a href="pages/register.html" class="btn btn-secondary">S'inscrire</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Vérifier si l'utilisateur est déjà connecté
+        if (localStorage.getItem('user_id')) {
+            window.location.href = 'pages/dashboard.html';
+        }
+
+        // Enregistrer le service worker
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('sw.js');
+        }
+    </script>
+</body>
+</html>

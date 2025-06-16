@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Floade Chat</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="manifest" href="../manifest.json">
+    <link rel="icon" href="../icons/icon-72x72.png">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <img src="../icons/floade-high-resolution-logo.png" alt="Floade Chat" class="sidebar-logo">
+                <h2>Floade Chat</h2>
+            </div>
+            
+            <div class="user-info">
+                <div class="user-avatar">
+                    <img id="userAvatar" src="../icons/icon-72x72.png" alt="Avatar">
+                </div>
+                <div class="user-details">
+                    <span id="userName">Utilisateur</span>
+                    <span class="user-status online">En ligne</span>
+                </div>
+            </div>
+            
+            <div class="conversations-section">
+                <div class="section-header">
+                    <h3>Conversations</h3>
+                    <button id="newConversationBtn" class="btn-icon">+</button>
+                </div>
+                <div id="conversationsList" class="conversations-list">
+                    <!-- Les conversations seront chargées ici -->
+                </div>
+            </div>
+            
+            <div class="sidebar-footer">
+                <button id="settingsBtn" class="btn-icon">⚙️</button>
+                <button id="logoutBtn" class="btn-icon">🚪</button>
+            </div>
+        </div>
+        
+        <!-- Chat Area -->
+        <div class="chat-area">
+            <div class="chat-header">
+                <div class="chat-info">
+                    <h3 id="chatTitle">Sélectionnez une conversation</h3>
+                    <span id="chatStatus"></span>
+                </div>
+                <div class="chat-actions">
+                    <button id="chatMenuBtn" class="btn-icon">⋮</button>
+                </div>
+            </div>
+            
+            <div id="messagesContainer" class="messages-container">
+                <div class="welcome-message">
+                    <h2>Bienvenue sur Floade Chat</h2>
+                    <p>Sélectionnez une conversation pour commencer à discuter</p>
+                </div>
+            </div>
+            
+            <div id="messageInput" class="message-input" style="display: none;">
+                <div class="input-actions">
+                    <button id="attachBtn" class="btn-icon">📎</button>
+                    <button id="voiceBtn" class="btn-icon">🎤</button>
+                </div>
+                <div class="input-field">
+                    <textarea id="messageText" placeholder="Tapez votre message..."></textarea>
+                </div>
+                <button id="sendBtn" class="btn-send">Envoyer</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modals -->
+    <div id="newConversationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Nouvelle conversation</h3>
+                <button class="modal-close">&times;</button>
+            </div>
+            <form id="newConversationForm">
+                <div class="form-group">
+                    <label for="conversationName">Nom de la conversation</label>
+                    <input type="text" id="conversationName" required>
+                </div>
+                <div class="form-group">
+                    <label for="participants">Participants (emails séparés par des virgules)</label>
+                    <textarea id="participants" placeholder="email1@example.com, email2@example.com" required></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary modal-close">Annuler</button>
+                    <button type="submit" class="btn btn-primary">Créer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>

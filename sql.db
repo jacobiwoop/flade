@@ -1,0 +1,125 @@
+-- Base de données pour l'application de chat
+CREATE DATABASE chat_app CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE chat_app;
+
+-- Table des utilisateurs
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    pseudo VARCHAR(50) NOT NULL UNIQUE,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    last_seen TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    is_online BOOLEAN DEFAULT FALSE
+);
+
+-- Table des conversations
+CREATE TABLE conversations (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Table de liaison utilisateurs-conversations
+CREATE TABLE conversation_participants (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    conversation_id INT NOT NULL,
+    user_id INT NOT NULL,
+    joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_participant (conversation_id, user_id)
+);
+
+-- Table des messages
+CREATE TABLE messages (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    conversation_id INT NOT NULL,
+    user_id INT NOT NULL,
+    content TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (conversation_id) REFERENCES conversations(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Table pour tracker les messages lus
+CREATE TABLE message_reads (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    message_id INT NOT NULL,
+    user_id INT NOT NULL,
+    read_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (message_id) REFERENCES messages(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    UNIQUE KEY unique_read (message_id, user_id)
+);
+
+-- Index pour optimiser les performances
+CREATE INDEX idx_messages_conversation ON messages(conversation_id, created_at);
+CREATE INDEX idx_conversation_participants ON conversation_participants(user_id);
+CREATE INDEX idx_message_reads ON message_reads(user_id, message_id);
+
+-- Données de test
+INSERT INTO users (pseudo, email, password) VALUES 
+('Alice', 'alice@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi'),
+('Bob', 'bob@example.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi');
+
+INSERT INTO conversations (name) VALUES ('Discussion générale');
+INSERT INTO conversation_participants (conversation_id, user_id) VALUES (1, 1), (1, 2);
+INSERT INTO messages (conversation_id, user_id, content) VALUES 
+(1, 1, 'Salut Bob ! Comment ça va ?'),
+(1, 2, 'Salut Alice ! Ça va bien et toi ?');
+
+
+-- Ajouter une table pour les photos de profil
+CREATE TABLE IF NOT EXISTS user_profiles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE,
+    profile_photo VARCHAR(255) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Ajouter une colonne pour les photos de profil dans la table users (alternative)
+ALTER TABLE users ADD COLUMN profile_photo VARCHAR(255) DEFAULT NULL AFTER email;
+
+-- Créer le dossier pour les uploads si nécessaire
+-- mkdir -p uploads/profiles/
+
+
+-- Ajouter les nouvelles fonctionnalités aux messages
+ALTER TABLE messages 
+ADD COLUMN reply_to_message_id INT DEFAULT NULL AFTER content,
+ADD COLUMN image_path VARCHAR(255) DEFAULT NULL AFTER reply_to_message_id,
+ADD COLUMN is_deleted BOOLEAN DEFAULT FALSE AFTER image_path,
+ADD COLUMN deleted_at TIMESTAMP NULL DEFAULT NULL AFTER is_deleted;
+
+-- Ajouter la contrainte de clé étrangère pour les réponses
+ALTER TABLE messages 
+ADD CONSTRAINT fk_reply_to_message 
+FOREIGN KEY (reply_to_message_id) REFERENCES messages(id) ON DELETE SET NULL;
+
+-- Index pour optimiser les requêtes
+CREATE INDEX idx_messages_reply_to ON messages(reply_to_message_id);
+CREATE INDEX idx_messages_deleted ON messages(is_deleted);
+
+-- Créer le dossier pour les images si nécessaire
+-- mkdir -p uploads/messages/
+
+
+-- Ajouter une table pour les photos de profil
+CREATE TABLE IF NOT EXISTS user_profiles (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL UNIQUE,
+    profile_photo VARCHAR(255) DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+-- Ajouter une colonne pour les photos de profil dans la table users (alternative)
+ALTER TABLE users ADD COLUMN profile_photo VARCHAR(255) DEFAULT NULL AFTER email;
+
+-- Créer le dossier pour les uploads si nécessaire
+-- mkdir -p uploads/profiles/
