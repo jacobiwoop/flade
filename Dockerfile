@@ -1,31 +1,33 @@
-FROM php:8.1-apache
+# Utilise une image officielle PHP avec Apache
+FROM php:8.2-apache
 
-# Installer les dépendances nécessaires pour Ratchet
+# Installer zip si ton projet en a besoin (par exemple pour composer)
 RUN apt-get update && apt-get install -y \
-    libzip-dev \
     unzip \
+    zip \
+    libzip-dev \
     && docker-php-ext-install zip
 
-# Installer composer (pour Ratchet et autoload)
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-WORKDIR /var/www/html
-
-# Copier tout le code source
-COPY . .
-
-# Installer les dépendances PHP (Ratchet etc.)
-RUN composer install
-
-# Activer le module rewrite d’Apache (optionnel mais fréquent)
+# Activer mod_rewrite pour les URLs propres
 RUN a2enmod rewrite
 
-# Exposer le port HTTP classique
+# Copier les fichiers du projet dans le conteneur
+COPY . /var/www/html/
+
+# Ajouter Composer (dernière version)
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+# Aller dans le dossier du projet
+WORKDIR /var/www/html
+
+# Installer les dépendances PHP (si composer.json existe)
+RUN [ -f composer.json ] && composer install --no-interaction --prefer-dist || true
+
+# Définir les droits (facultatif si pas de problème de permission)
+RUN chown -R www-data:www-data /var/www/html
+
+# Exposer le port 80
 EXPOSE 80
 
-# Copier le script de démarrage
-COPY start.sh /start.sh
-RUN chmod +x /start.sh
-
-# Commande pour démarrer les 2 serveurs
-CMD ["/start.sh"]
+# Démarrer Apache
+CMD ["apache2-foreground"]
