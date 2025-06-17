@@ -8,17 +8,17 @@
   "scope": "/",
   "icons": [
     {
-      "src": "/icons/icons-144-.png",
+      "src": "/icons/icons-144x144.png",
       "type": "image/png",
       "sizes": "144x144"
     },
     {
-      "src": "/icons/icons-192.jpg",
+      "src": "/icons/icons-192x192.jpg",
       "type": "image/jpeg",
       "sizes": "192x192"
     },
     {
-      "src": "/icons/icons-512.png",
+      "src": "/icons/icons-512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
