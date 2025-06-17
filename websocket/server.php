@@ -2,7 +2,7 @@
 // websocket/server.php
 require_once __DIR__ . '/../vendor/autoload.php';
 require_once __DIR__ . '/../config/database.php';
-require_once '/var/www/html/classes/chat.php';
+require_once '/var/www/html/classes/Chat.php';
 
 
 
