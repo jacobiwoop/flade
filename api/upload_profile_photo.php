@@ -23,17 +23,18 @@ try {
 
     $file = $_FILES['profile_photo'];
 
-    // Vérifications
+    // Vérification du type MIME autorisé
     $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     if (!in_array($file['type'], $allowedTypes)) {
         throw new Exception('Type de fichier non autorisé. Utilisez JPG, PNG, GIF ou WebP.');
     }
 
-    if ($file['size'] > 2 * 1024 * 1024) { // 2MB max
+    // Limite taille 2MB
+    if ($file['size'] > 2 * 1024 * 1024) {
         throw new Exception('Le fichier est trop volumineux (maximum 2MB)');
     }
 
-    // Appel à l'API distante
+    // Upload vers API distante
     $apiUrl = 'https://flad.x10.mx/api/upload.php';
     $type = 'profile';
 
@@ -46,7 +47,7 @@ try {
             'file' => new CURLFile($file['tmp_name'], $file['type'], $file['name']),
             'type' => $type
         ],
-        CURLOPT_SSL_VERIFYPEER => false, // ⚠️ Pour corriger les erreurs SSL
+        CURLOPT_SSL_VERIFYPEER => false, // Désactiver temporairement SSL (à sécuriser en prod)
         CURLOPT_SSL_VERIFYHOST => 0,
     ]);
 
@@ -72,19 +73,17 @@ try {
         throw new Exception('L\'API n\'a pas retourné d\'URL');
     }
 
-    // Mettre à jour la base de données
+    // Mise à jour dans la base de données
     $database = new Database();
     $conn = $database->getConnection();
 
-    // Supprimer l'ancienne photo si elle existe
+    // Récupérer l’ancienne photo (pour info seulement, pas de suppression locale ici)
     $query = "SELECT profile_photo FROM users WHERE id = ?";
     $stmt = $conn->prepare($query);
     $stmt->execute([$_SESSION['user_id']]);
     $oldPhoto = $stmt->fetchColumn();
 
-    // ❗ Important : comme l'image est distante, on ne supprime rien ici localement
-
-    // Sauvegarder le nouveau chemin dans la base (tu peux aussi stocker l'URL complète)
+    // Mettre à jour avec le nouveau nom de fichier
     $query = "UPDATE users SET profile_photo = ? WHERE id = ?";
     $stmt = $conn->prepare($query);
     $stmt->execute([$filename, $_SESSION['user_id']]);
