@@ -22,19 +22,20 @@ try {
 
     $file = $_FILES['image'];
 
-    // Vérifications
+    // Vérifications MIME autorisés
     $allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
     if (!in_array($file['type'], $allowedTypes)) {
         throw new Exception('Type de fichier non autorisé. Utilisez JPG, PNG, GIF ou WebP.');
     }
 
+    // Limite taille 5MB
     if ($file['size'] > 5 * 1024 * 1024) {
         throw new Exception('Le fichier est trop volumineux (maximum 5MB)');
     }
 
-    // Appel à l'API distante
-    $apiUrl = 'http://flad.x10.mx/api/upload.php';
-    $type = 'message'; // ici on force le type (tu peux rendre ça dynamique)
+    // Envoi à l’API distante
+    $apiUrl = 'http://flad.x10.mx/api/upload.php'; // HTTP si HTTPS pose problème
+    $type = 'message';
 
     $curl = curl_init();
     curl_setopt_array($curl, [
@@ -48,7 +49,6 @@ try {
         CURLOPT_SSL_VERIFYPEER => false,
         CURLOPT_SSL_VERIFYHOST => 0,
     ]);
-
 
     $response = curl_exec($curl);
     $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
