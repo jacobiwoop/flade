@@ -5,6 +5,7 @@ require_once 'config/config.php';
 if (isLoggedIn()) {
     redirect('dashboard.php');
 } else {
-    require_once 'login.php';
+    header('Location: login.php');
+    exit();
 }
 ?>
