@@ -1323,7 +1323,7 @@ function getProfilePhotoUrl($photo)
 
     <script>
         // Configuration
-        const WEBSOCKET_URL = 'wss://https://1e42-41-85-163-114.ngrok-free.app';
+        const WEBSOCKET_URL = 'wss://seahorse-eager-joey.ngrok-free.app';
         const USER_ID = <?php echo $_SESSION['user_id']; ?>;
         const CONVERSATION_ID = <?php echo $conversation_id; ?>;
         const USER_PSEUDO = '<?php echo addslashes($_SESSION['user_pseudo']); ?>';
