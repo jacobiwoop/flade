@@ -12,7 +12,7 @@
 
 <body class="bg-gradient-to-br from-blue-500 to-purple-600 min-h-screen flex items-center justify-center">
     <?php
-    require_once 'config/config.php';
+   // require_once 'config/config.php';
 
     if (isLoggedIn()) {
         redirect('dashboard.php');
